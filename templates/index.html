@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <h1>
+        Заметки
+    </h1>
+
+    <div>
+        <label>Хотите увидеть все заметки?</label>
+        <button id="show_all">Да</button>
+        <button id="filter">Нет</button>
+    </div>
+
+
+    <ul>
+        {% for todo in todos%}
+        <li>
+            <p>Name: {{todo.title}}</p>
+            <p>Description: {{todo.description}}</p>
+            <p>Completion status:
+                {% if todo.is_completed %}
+                done
+                {% else %}
+                not completed
+                {% endif %}
+            </p>
+            <p>Date: {{todo.reminder_at}}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    <script src="/static/scripts.js"></script>
+</body>
+
+</html>
