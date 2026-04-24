@@ -21,8 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let btnShowAll = document.getElementById('show_all');
 
     async function downloadTodos(params = {}) {
-        const url = new URL('/todo', window.location.origin);
-
         todosContainer.innerHTML = '<p>download</p>';
 
 
@@ -37,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 todosContainer.innerHTML = `<p>error: ${response.status}</p>`;
+                return;
             }
 
             let todos = await response.json();
