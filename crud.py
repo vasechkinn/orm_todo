@@ -43,13 +43,16 @@ def create_todo(db: Session, todo: ToDoCreate) -> Todo:
 def update_todo_by_id(db: Session, todo_id: int, todo_update: ToDoUpdate) -> Todo | None:
     todo = db.get(Todo, todo_id)
 
+    if todo is None:
+        return None
+
     if todo_update.title is not None:
         todo.title = todo_update.title
 
-    if todo.description is not None:
+    if todo_update.description is not None:
         todo.description = todo_update.description
 
-    if todo.is_completed is not None:
+    if todo_update.is_completed is not None:
         todo.is_completed = todo_update.is_completed
 
     db.commit()
@@ -79,7 +82,7 @@ def add_reminder_by_id(db: Session, todo_id: int, reminder: ReminderSet) -> Todo
     db.refresh(todo)
     return todo
 
-def delete_reminder_by_id(db: Session, todo_id: int) -> Todo:
+def delete_reminder_by_id(db: Session, todo_id: int) -> Todo | None:
     todo = db.get(Todo, todo_id)
 
     if todo is None:
