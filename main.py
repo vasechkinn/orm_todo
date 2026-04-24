@@ -5,7 +5,10 @@ from fastapi import (FastAPI,
                      Path,
                      status,
                      HTTPException,
-                     Request,)
+                     Request,
+                     Depends,
+                     )
+from sqlalchemy.orm import Session
 
 from typing import Annotated
 from fastapi.templating import Jinja2Templates
@@ -28,16 +31,16 @@ def startup():
 
 
 @app.get('/todo')
-async def get_todos(skip: Annotated[int, Query(ge=0)] = 0,
-                    limit: Annotated[int, Query(gt=0)] = 100,
-                    is_completed: Annotated[bool | None, Query()] = None) -> list[ToDoRead]:
-    db = next(get_db())
+async def get_todos(
+    db: Session = Depends(get_db),
+    skip: Annotated[int, Query(ge=0)] = 0,
+    limit: Annotated[int, Query(gt=0)] = 100,
+    is_completed: Annotated[bool | None, Query()] = None) -> list[ToDoRead]:
     todos = crud.get_todos(db, skip, limit, is_completed)
     return todos
 
 @app.get('/todo/{todo_id}', status_code=status.HTTP_201_CREATED)
-def get_todo_by_id(todo_id: Annotated[int, Path()]) -> ToDoRead:
-    db = next(get_db())
+def get_todo_by_id(todo_id: Annotated[int, Path()], db: Session = Depends(get_db)) -> ToDoRead:
     result = crud.get_todo_by_id(db, todo_id)
 
     if result is None:
@@ -47,16 +50,15 @@ def get_todo_by_id(todo_id: Annotated[int, Path()]) -> ToDoRead:
 
 
 @app.post('/todos', status_code=status.HTTP_201_CREATED)
-def create_todo(todo: ToDoCreate) -> ToDoRead:
-    db = next(get_db())
+def create_todo(todo: ToDoCreate, db: Session = Depends(get_db)) -> ToDoRead:
     todo_create = crud.create_todo(db, todo)
 
     return todo_create
 
 @app.put('/todos/{todo_id}')
 def update_todo_by_id(todo_id: Annotated[int, Path()],
-                      todo_update: ToDoUpdate) -> ToDoRead:
-    db = next(get_db())
+                      todo_update: ToDoUpdate,
+                      db: Session = Depends(get_db)) -> ToDoRead:
     todo = crud.update_todo_by_id(db, todo_id, todo_update)
 
     if todo is None:
@@ -68,8 +70,8 @@ def update_todo_by_id(todo_id: Annotated[int, Path()],
 
 @app.delete('/todos/{todo_id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_todo_by_id(
-        todo_id: Annotated[int, Path()]) -> None:
-    db = next(get_db())
+        todo_id: Annotated[int, Path()],
+        db: Session = Depends(get_db)) -> None:
 
     res = crud.delete_todo_by_id(db, todo_id)
 
@@ -82,9 +84,9 @@ def delete_todo_by_id(
 @app.put('/todos/{todo_id}/reminder')
 def add_reminder_by_id(
         todo_id: Annotated[int, Path()],
-        reminder: ReminderSet
+        reminder: ReminderSet,
+        db: Session = Depends(get_db)
     ) -> ToDoRead:
-    db = next(get_db())
 
     todo = crud.add_reminder_by_id(db, todo_id, reminder)
 
@@ -96,10 +98,9 @@ def add_reminder_by_id(
 
 @app.delete('/todos/{todo_id}/reminder')
 def delete_reminder_by_id(
-        todo_id: Annotated[int, Path()]
+        todo_id: Annotated[int, Path()],
+        db: Session = Depends(get_db),
     ) -> ToDoRead:
-    db = next(get_db())
-
     todo = crud.delete_reminder_by_id(db, todo_id)
 
     if todo is None: 
@@ -112,8 +113,8 @@ def delete_reminder_by_id(
 def index(request: Request,
           skip: Annotated[int, Query(ge=0)] = 0,
           limit: Annotated[int, Query(gt=0)] = 100,
-          is_completed: Annotated[bool | None, Query()] = None):
-    db = next(get_db())
+          is_completed: Annotated[bool | None, Query()] = None,
+          db: Session = Depends(get_db)):
     todos = crud.get_todos(db, skip, limit, is_completed)
     
     return templates.TemplateResponse(
