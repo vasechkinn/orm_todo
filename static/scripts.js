@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let todosContainer = document.getElementById('todos_container');
     let btnFilter = document.getElementById('filter');
     let btnShowAll = document.getElementById('show_all');
+    let btnClear = document.getElementById('clear');
 
     async function downloadTodos(params = {}) {
         todosContainer.innerHTML = '<p>download</p>';
@@ -75,6 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
             filtersShow.textContent = '';
             await downloadTodos()
         });
+    }
+
+    if (btnClear) {
+        btnClear.addEventListener('click', () => {
+            let todosContainer = document.getElementById('todos_container');
+            let filtersShow = document.getElementById('filters_show');
+            filtersShow.textContent = '';
+            todosContainer.textContent = '';
+        })
     }
 
     if (btnFilter) {
