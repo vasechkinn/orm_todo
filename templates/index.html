@@ -15,7 +15,11 @@
     <div>
         <label>Хотите увидеть все заметки?</label>
         <button id="show_all">Да</button>
-        <button id="filter">Нет</button>
+        <button id="filter">Задать фильры</button>
+    </div>
+
+    <div id="filters_show">
+        
     </div>
 
     <div id="todos_container">
@@ -23,22 +27,7 @@
     </div>
 
 
-    <!-- <ul>
-        {% for todo in todos%}
-        <li>
-            <p>Name: {{todo.title}}</p>
-            <p>Description: {{todo.description}}</p>
-            <p>Completion status:
-                {% if todo.is_completed %}
-                done
-                {% else %}
-                not completed
-                {% endif %}
-            </p>
-            <p>Date: {{todo.reminder_at}}</p>
-        </li>
-        {% endfor %}
-    </ul> -->
+    
     <script src="/static/scripts.js"></script>
 </body>
 
