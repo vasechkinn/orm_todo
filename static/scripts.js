@@ -2,7 +2,7 @@ function escapeHtml(value) {
     let str = '';
     if (value === null || value === undefined) {
         str = '';
-    }else {
+    } else {
         str = String(value)
     }
 
@@ -15,7 +15,7 @@ function escapeHtml(value) {
         .replace(/`/g, '&#x60;');
 };
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     let todosContainer = document.getElementById('todos_container');
     let btnFilter = document.getElementById('filter');
     let btnShowAll = document.getElementById('show_all');
@@ -71,18 +71,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (btnShowAll) {
         btnShowAll.addEventListener('click', async () => {
+            let filtersShow = document.getElementById('filters_show');
+            filtersShow.textContent = '';
             await downloadTodos()
         });
     }
 
     if (btnFilter) {
         btnFilter.addEventListener('click', async () => {
-            await downloadTodos({
-                limit: 10,
-                skip: 0,
-                is_completed: false
+            let todosContainer = document.getElementById('todos_container');
+            todosContainer.textContent = '';
+            let filtersShow = document.getElementById('filters_show');
+            filtersShow.innerHTML = `
+            <label>Skip:
+                <input type="number" min="0" id="skip_todos">
+            </label>
+            <label>Limit:
+                <input type="number" min="1" id="limit_todos">
+            </label>
+            <label>Is completed?
+                <select id="is_completed_select">
+                    <option value="">All</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </label>
+            <button id='apply_btn'>apply</button>`;
+
+            const applyBtn = document.getElementById('apply_btn');
+            if (applyBtn) {
+                applyBtn.addEventListener('click', () => {
+
+                    const skip = document.getElementById('skip_todos').value;
+                    const limit = document.getElementById('limit_todos').value;
+                    const isCompleted = document.getElementById('is_completed_select').value;
+        
+                    const params = {
+                        skip: parseInt(skip, 10) || 0,
+                        limit: parseInt(limit, 10) || 10
+                    };
+        
+                    if (isCompleted !== "") {
+                        params.is_completed = isCompleted === 'true';
+                    };
+        
+                    downloadTodos(params);
+                })
             }
-            );
         });
     }
 });
