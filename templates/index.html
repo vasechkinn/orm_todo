@@ -12,7 +12,51 @@
         Заметки
     </h1>
 
-    <div>
+    <form method="get" action="/" id="filter_form">
+        <label> Skip:
+            <input type="number" name="skip" value="{{ skip }}" min="0">
+        </label>
+
+        <label> Limit:
+            <input type="number" name="limit" value="{{ limit }}" min="1">
+        </label>
+
+        <label> Status:
+            <select name="is_completed">
+                <option value="" {% if is_completed is none %} selected {% endif%}>
+                    Показать все
+                </option>
+
+                <option value="true" {% if is_completed is true %} selected {% endif%}>
+                    Выполненные
+                </option>
+
+                <option value="false" {% if is_completed is false %} selected {% endif%}>
+                    Невыполненные
+                </option>
+            </select>
+        </label>
+        <button type="submit">Применить</button>
+    </form>
+
+    <div id="todos_container">
+        {% if todos %}
+        <ul>
+            {% for todo in todos %}
+            <li>
+                {{todo.title}}<br>
+                {{todo.description}}<br>
+                {{todo.is_completed}}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>no</p>
+        
+        {% endif %}
+    </div>
+
+    <!-- <div>
         <label>Хотите увидеть все заметки?</label>
         <button id="show_all">Да</button>
         <button id="filter">Задать фильры</button>
@@ -30,11 +74,11 @@
 
     <div id="todos_container">
         <p>Нажмите на кнопку чтоб ы посмотреть заметки</p>
-    </div>
+    </div> -->
 
 
-    
-    <script src="/static/scripts.js"></script>
+
+    <!-- <script src="/static/scripts.js"></script> -->
 </body>
 
 </html>
