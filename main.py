@@ -7,6 +7,7 @@ from fastapi import (FastAPI,
                      HTTPException,
                      Request,
                      Depends,
+                     Form
                      )
 from sqlalchemy.orm import Session
 from fastapi.responses import (
@@ -16,7 +17,7 @@ from fastapi.responses import (
 from typing import Annotated
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-import crud
+import crud, schemas
 
 from schemas import(
     ToDoCreate, 
@@ -115,7 +116,7 @@ def delete_reminder_by_id(
 @app.get('/')
 def index(request: Request,
           skip: Annotated[int, Query(ge=0)] = 0,
-          limit: Annotated[int, Query(gt=0)] = 100,
+          limit: Annotated[int, Query(gt=0)] = 10,
           is_completed: Annotated[str | None, Query()] = None,
           db: Session = Depends(get_db)):
     status_filter = None
@@ -135,3 +136,25 @@ def index(request: Request,
                  'is_completed': status_filter,
                  }
     )
+
+@app.get('/todos/new')
+def create_form(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name='todo_create.html',
+        context={'title': 'новая заметка'})
+
+@app.post('/todos/create')
+def create_todo_jin(
+    db: Session = Depends(get_db),
+    title: str = Form(..., min_length=1, max_length=256),
+    description: str = Form(..., max_length=512),
+    is_completed: bool = Form(default=False)):
+
+    todo = schemas.ToDoCreate(title=title, 
+                              description=description,
+                               is_completed=is_completed)
+
+    res = crud.create_todo(db, todo)
+
+    return RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
