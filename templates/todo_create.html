@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>Создание</h1>
+
+    <form method="post" action="/todos/create">
+        <label>
+            Название: <br>
+            <input type="text" name="title" required minlength="1" maxlength="256">
+        </label><br><br>
+
+        <label>
+            Описание: <br>
+            <textarea type="text" name="description" required maxlength="512" rows="5" cols="40"></textarea>
+        </label><br><br>
+
+        <label>
+            Статус выполнения: <br>
+            <input type="checkbox" name="is_completed"> Выполнено?
+        </label><br><br>
+
+        <button type="submit">Добавить</button>
+
+    </form>
+</body>
+</html>
