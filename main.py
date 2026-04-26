@@ -9,7 +9,10 @@ from fastapi import (FastAPI,
                      Depends,
                      )
 from sqlalchemy.orm import Session
-
+from fastapi.responses import (
+    RedirectResponse,
+    HTMLResponse,
+)
 from typing import Annotated
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -22,7 +25,7 @@ from schemas import(
     ReminderSet
 )
 app = FastAPI()
-app.mount('/static', StaticFiles(directory='static'), name='static')
+# app.mount('/static', StaticFiles(directory='static'), name='static')
 templates = Jinja2Templates(directory='templates')
 
 @app.on_event('startup')
@@ -113,13 +116,22 @@ def delete_reminder_by_id(
 def index(request: Request,
           skip: Annotated[int, Query(ge=0)] = 0,
           limit: Annotated[int, Query(gt=0)] = 100,
-          is_completed: Annotated[bool | None, Query()] = None,
+          is_completed: Annotated[str | None, Query()] = None,
           db: Session = Depends(get_db)):
-    todos = crud.get_todos(db, skip, limit, is_completed)
+    status_filter = None
+    if is_completed == 'true':
+        status_filter = True
+    elif is_completed == 'false':
+        status_filter = False
+    todos = crud.get_todos(db, skip, limit, status_filter)
     
     return templates.TemplateResponse(
         request=request,
         name='index.html',
         context={'title': 'hello',
-                 'todos': todos}
+                 'todos': todos,
+                 'skip': skip,
+                 'limit': limit,
+                 'is_completed': status_filter,
+                 }
     )
