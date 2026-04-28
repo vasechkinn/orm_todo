@@ -16,6 +16,10 @@
         <a href="/todos/new">Создать заметку</a>
     </div>
 
+    <div>
+        <a href="/todos/update">Оредактировать заметку</a>
+    </div>
+
     <form method="get" action="/" id="filter_form">
         <label> Skip:
             <input type="number" name="skip" value="{{ skip }}" min="0">
@@ -60,29 +64,6 @@
         {% endif %}
     </div>
 
-    <!-- <div>
-        <label>Хотите увидеть все заметки?</label>
-        <button id="show_all">Да</button>
-        <button id="filter">Задать фильры</button>
-        <button id="clear">Очистить</button>
-    </div>
-
-    <div>
-        <label>Добавить заметку?</label>
-        <button id="add_todo">Да</button>
-    </div>
-
-    <div id="filters_show">
-        
-    </div>
-
-    <div id="todos_container">
-        <p>Нажмите на кнопку чтоб ы посмотреть заметки</p>
-    </div> -->
-
-
-
-    <!-- <script src="/static/scripts.js"></script> -->
 </body>
 
 </html>
