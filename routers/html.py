@@ -21,7 +21,7 @@ from fastapi.responses import (
 )
 templates = Jinja2Templates(directory='templates')
 
-router = APIRouter(prefix='/html')
+router = APIRouter()
 
 @router.get('/')
 def index(request: Request,
@@ -47,7 +47,6 @@ def index(request: Request,
                  }
     )
 
-
 @router.get('/todos/new')
 def create_form(request: Request):
     return templates.TemplateResponse(
@@ -67,5 +66,27 @@ def create_todo_jin(
                               is_completed=is_completed)
 
     res = crud.create_todo(db, todo)
+
+    return RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
+
+@router.get('todos/update_form')
+def create_form(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name='update.html',
+        context={'title': 'отредактированная заметка'})
+
+@router.post('/todos/update')
+def create_update_jin(
+        db: Session = Depends(get_db),
+        title: str | None = Form(None, min_length=1, max_length=256),
+        description: str | None= Form(None, max_length=512),
+        is_completed: bool = Form(default=False)
+        ):
+    todo = schemas.ToDoUpdate(title=title,
+                              description=description,
+                              is_completed=is_completed)
+
+    # res = crud.update_todo_by_id(db, todo_id=id, todo)
 
     return RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
