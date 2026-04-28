@@ -1,3 +1,7 @@
 __pycashe__/
 venv/
 *.db
+
+*.pyc
+.venv/
+venv/
