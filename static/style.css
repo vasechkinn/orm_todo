@@ -1,0 +1,43 @@
+#todos_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+
+.card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.upd {
+    text-decoration: none;
+    color: rgb(6, 77, 52);
+}
+
+.del {
+    text-decoration: none;
+    color: rgb(117, 8, 8);
+}
+
+.btn-primary {
+    margin: 5px;
+}
+
+#filter_form {
+    margin: 5px;
+}

@@ -16,7 +16,7 @@ def get_todos(
     limit: int,
     is_completed: bool | None = None) -> list[Todo]:
 
-    statement = select(Todo).offset(skip).limit(limit)
+    statement = select(Todo).order_by(Todo.id.desc()).offset(skip).limit(limit)
     if is_completed is not None:
         statement = statement.where(Todo.is_completed == is_completed)
     
