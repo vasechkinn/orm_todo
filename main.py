@@ -13,10 +13,12 @@ from fastapi.responses import (
     RedirectResponse,
     HTMLResponse,
 )
-
+from fastapi.staticfiles import StaticFiles
 
 from routers import api, html
 app = FastAPI()
+app.mount('/static', StaticFiles(directory='static'), name='static')
+
 
 app.include_router(router=api.router)
 app.include_router(router=html.router)

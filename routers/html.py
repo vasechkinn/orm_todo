@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 import crud, schemas
 from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
+
 from fastapi.responses import (
     RedirectResponse,
     HTMLResponse,
@@ -23,7 +23,6 @@ from fastapi.responses import (
 templates = Jinja2Templates(directory='templates')
 
 router = APIRouter()
-router.mount('/static', StaticFiles(directory='static'), name='static')
 
 @router.get('/')
 def index(request: Request,
