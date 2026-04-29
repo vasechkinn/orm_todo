@@ -41,3 +41,16 @@ a {
 #filter_form {
     margin: 5px;
 }
+
+body {
+    margin: 15px;
+}
+
+.form-check-input {
+    border: 1px solid rgb(27, 23, 161);
+}
+
+.input_text {
+    border-radius: 7px;
+    border: 1px solid rgb(27, 23, 161);
+}
