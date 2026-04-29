@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="/static/style.css" rel="stylesheet">
+
 </head>
+
 <body>
-    <h1>Создание</h1>
+
+    <h1 class="create_todo">Заполните поля новой заметк</h1>
 
     <form method="post" action="/todos/create">
         <label>
             Название: <br>
-            <input type="text" name="title" required minlength="1" maxlength="256">
+            <input type="text" name="title" required minlength="1" maxlength="256" class="input_text">
         </label><br><br>
 
         <label>
             Описание: <br>
-            <textarea type="text" name="description" required maxlength="512" rows="5" cols="40"></textarea>
+            <textarea class="input_text" type="text" name="description" required maxlength="512" rows="5" cols="80"></textarea>
         </label><br><br>
 
-        <label>
-            Статус выполнения: <br>
-            <input type="checkbox" name="is_completed"> Выполнено?
-        </label><br><br>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck" name="is_completed">
+            <label class="form-check-label" for="gridCheck">
+                Задача выполнена.
+            </label>
+        </div>
+        
 
         <button type="submit">Добавить</button>
 
     </form>
+
 </body>
+
 </html>

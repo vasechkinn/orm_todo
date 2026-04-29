@@ -32,7 +32,7 @@
         </label>
 
         <label> Status:
-            <select name="is_completed">
+            <select name="is_completed" class="btn btn-primary">
                 <option value="" {% if is_completed is none %} selected {% endif%}>
                     Показать все
                 </option>
@@ -46,7 +46,7 @@
                 </option>
             </select>
         </label>
-        <button type="submit">Применить</button>
+        <button type="submit" class="btn btn-primary">Применить</button>
     </form>
 
     <div id="todos_container">
