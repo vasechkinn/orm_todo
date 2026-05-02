@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update todo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="/static/style.css" rel="stylesheet">
+
+</head>
+<body>
+    <h1 class="update_todo">Выберите поля для редактирования</h1>
+
+    <form method="post" action="/todos/{{ todo.id }}/update">
+        <label>
+            <label>
+            Название: <br>
+            <input type="text" name="title" value="{{ todo.title }}" required minlength="1" maxlength="256" class="input_text">
+        </label><br><br>
+
+        <label>
+            Описание: <br>
+            <textarea class="input_text" type="text" name="description" required maxlength="512" rows="5" cols="80">{{ todo.description }}</textarea>
+        </label><br><br>
+
+        <div class="form-check">
+            <input 
+            class="form-check-input" 
+            type="checkbox" 
+            id="gridCheck" 
+            name="is_completed"
+            {% if todo.is_completed %} checked {% endif %}>
+            <label class="form-check-label" for="gridCheck">
+                Задача выполнена.
+            </label>
+        </div>
+        
+
+        <button type="submit">Сохранить</button>
+        </label>
+    </form>
+</body>
+</html>
