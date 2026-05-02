@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1>Подтвердите удаление задачи</h1>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{todo.title}}</h5>
+            <p class="card-text">{{todo.description}}</p>
+            <h6 class="card-subtitle mb-2 text-body-secondary">
+                {% if todo.is_completed is true%}
+                Выполнено
+                {%else%}
+                Не выполнено
+                {%endif%}
+            </h6>
+        </div>
+    </div>
+
+    <form method="post" action="/todos/{{ todo.id }}/delete">
+        <button 
+        type="submit" 
+        class="btn btn-warning"
+        onclick="return confirm('Вы действительно хотите безвозвратно удалить эти данные?');">Удалить</button>
+        
+        <button 
+        type="button" 
+        class="btn btn-primary">
+            <a href="/">Отменить удаление</a>
+        </button>
+    </form>
+
+    
+
+</body>
+
+</html>
