@@ -70,24 +70,38 @@ def create_todo_jin(
 
     return RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
 
-@router.get('todos/update_form')
-def create_form(request: Request):
+@router.get('/todos/{todo_id}/update_form')
+def update_form(
+    request: Request,
+    todo_id: int,
+    db: Session = Depends(get_db)
+    ):
+    todo = crud.get_todo_by_id(db, todo_id=todo_id)
+
+    if not todo:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Задача не найдена')
+
     return templates.TemplateResponse(
         request=request,
-        name='update.html',
-        context={'title': 'отредактированная заметка'})
+        name='todo_update.html',
+        context={'todo': todo})
 
-@router.post('/todos/update')
-def create_update_jin(
-        db: Session = Depends(get_db),
-        title: str | None = Form(None, min_length=1, max_length=256),
-        description: str | None= Form(None, max_length=512),
-        is_completed: bool = Form(default=False)
-        ):
+@router.post('/todos/{todo_id}/update')
+def update_jin(
+    todo_id: int,
+    db: Session = Depends(get_db),
+    title: str | None = Form(None, min_length=1, max_length=256),
+    description: str | None= Form(None, max_length=512),
+    is_completed: bool = Form(default=False)
+    ):
     todo = schemas.ToDoUpdate(title=title,
                               description=description,
                               is_completed=is_completed)
 
-    # res = crud.update_todo_by_id(db, todo_id=id, todo)
+    res = crud.update_todo_by_id(db, todo_id, todo)
+
+    if not res:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Задача не найдена')
+
 
     return RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
