@@ -79,7 +79,7 @@ def update_form(
     todo = crud.get_todo_by_id(db, todo_id=todo_id)
 
     if not todo:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Задача не найдена')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Задача не найдена')
 
     return templates.TemplateResponse(
         request=request,
@@ -101,7 +101,27 @@ def update_jin(
     res = crud.update_todo_by_id(db, todo_id, todo)
 
     if not res:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Задача не найдена')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Задача не найдена')
 
 
+    return RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
+
+@router.get('/todos/{todo_id}/delete_form')
+def delete_form(
+    request: Request,
+    todo_id: int,
+    db: Session = Depends(get_db)):
+    todo = crud.get_todo_by_id(db, todo_id)
+
+    if not todo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Задача не найдена')
+
+    return templates.TemplateResponse(
+        request=request,
+        name='todo_delete.html',
+        context={'todo': todo})
+
+@router.post('/todos/{todo_id}/delete')
+def delete_jinj(todo_id: int, db: Session = Depends(get_db)):
+    crud.delete_todo_by_id(db, todo_id)
     return RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
