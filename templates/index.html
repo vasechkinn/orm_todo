@@ -61,7 +61,7 @@
                     {%endif%}
                 </h6>
                 <a href="/todos/{{ todo.id }}/update_form" class="card-link upd">Редактировать</a>
-                <a href="/todos/delete" class="card-link del">Удалить</a>
+                <a href="/todos/{{ todo.id }}/delete_form" class="card-link del">Удалить</a>
             </div>
         </div>
         {% endfor %}
