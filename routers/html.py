@@ -61,10 +61,19 @@ def create_todo_jin(
         db: Session = Depends(get_db),
         title: str = Form(..., min_length=1, max_length=256),
         description: str = Form(..., max_length=512),
-        is_completed: bool = Form(default=False)):
+        is_completed: bool = Form(default=False),
+        reminder_at: str | None = Form(None)):
+    dt = None
+    if reminder_at:
+        try:
+            dt = datetime.strptime(reminder_at, '%Y-%m-%dT%H:%M')
+        except ValueError:
+            dt = None
+
     todo = schemas.ToDoCreate(title=title,
                               description=description,
-                              is_completed=is_completed)
+                              is_completed=is_completed,
+                              reminder_at=dt,)
 
     res = crud.create_todo(db, todo)
 
@@ -92,11 +101,20 @@ def update_jin(
     db: Session = Depends(get_db),
     title: str | None = Form(None, min_length=1, max_length=256),
     description: str | None= Form(None, max_length=512),
-    is_completed: bool = Form(default=False)
+    is_completed: bool = Form(default=False),
+    reminder_at: str | None = Form(None)
     ):
+    dt = None
+    if reminder_at:
+        try:
+            dt = datetime.strptime(reminder_at, '%Y-%m-%dT%H:%M')
+        except ValueError:
+            dt = None
+
     todo = schemas.ToDoUpdate(title=title,
                               description=description,
-                              is_completed=is_completed)
+                              is_completed=is_completed,
+                              reminder_at=dt)
 
     res = crud.update_todo_by_id(db, todo_id, todo)
 
