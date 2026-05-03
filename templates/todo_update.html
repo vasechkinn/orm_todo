@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,46 +10,50 @@
     <link href="/static/style.css" rel="stylesheet">
 
 </head>
+
 <body>
     <h1 class="update_todo">Выберите поля для редактирования</h1>
 
     <form method="post" action="/todos/{{ todo.id }}/update">
+
         <label>
-            <label>
             Название: <br>
-            <input type="text" name="title" value="{{ todo.title }}" required minlength="1" maxlength="256" class="input_text">
+            <input type="text" name="title" value="{{ todo.title }}" required minlength="1" maxlength="256"
+                class="input_text">
         </label><br><br>
 
         <label>
             Описание: <br>
-            <textarea class="input_text" type="text" name="description" required maxlength="512" rows="5" cols="80">{{ todo.description }}</textarea>
+            <textarea class="input_text" type="text" name="description" required maxlength="512" rows="5"
+                cols="80">{{ todo.description }}</textarea>
         </label><br><br>
 
         <div class="form-check">
-            <input 
-            class="form-check-input" 
-            type="checkbox" 
-            id="gridCheck" 
-            name="is_completed"
-            {% if todo.is_completed %} checked {% endif %}>
+            <input class="form-check-input" type="checkbox" id="gridCheck" name="is_completed" {% if todo.is_completed
+                %} checked {% endif %}>
             <label class="form-check-label" for="gridCheck">
                 Задача выполнена.
             </label>
         </div>
-        
-        <label>
-            Напоминание: <br>
-            <input class="input_text" 
-            type="datetime-local"
-            name="reminder_at"
-            value="{{ todo.reminder_at.strftime('%Y-%m-%dT%H:%M') if todo.reminder_at else '' }}"> 
-        </label><br><br>
+
+        <label> Напоминание: </label><br>
+        <input class="input_text" type="datetime-local" name="reminder_at"
+            value="{{ todo.reminder_at.strftime('%Y-%m-%dT%H:%M') if todo.reminder_at else '' }}">
+        <br><br>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="deleteReminder" name="delete_reminder">
+            <label class="form-check-label" for="deleteReminder">
+                Удалить напоминание
+            </label>
+        </div>
 
         <button type="submit" class="btn btn-primary">Сохранить</button>
         <button type="button" class="btn btn-primary">
             <a href="/">Отменить изменения</a>
         </button>
-        </label>
+
     </form>
 </body>
+
 </html>
