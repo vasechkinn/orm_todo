@@ -102,14 +102,29 @@ def update_jin(
     title: str | None = Form(None, min_length=1, max_length=256),
     description: str | None= Form(None, max_length=512),
     is_completed: bool = Form(default=False),
-    reminder_at: str | None = Form(None)
+    reminder_at: str | None = Form(None),
+    delete_reminder: bool = Form(False),
     ):
-    dt = None
-    if reminder_at:
+
+    current_todo = crud.get_todo_by_id(db, todo_id)
+    if not current_todo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Задача не найдена')
+    
+    
+    if delete_reminder:
+        dt = None
+        print(1)
+    elif reminder_at:
         try:
             dt = datetime.strptime(reminder_at, '%Y-%m-%dT%H:%M')
+            print(2)
         except ValueError:
             dt = None
+            print(3)
+
+    else:
+        dt = current_todo.reminder_at
+        print(4)
 
     todo = schemas.ToDoUpdate(title=title,
                               description=description,
