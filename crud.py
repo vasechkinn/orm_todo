@@ -55,8 +55,7 @@ def update_todo_by_id(db: Session, todo_id: int, todo_update: ToDoUpdate) -> Tod
     if todo_update.is_completed is not None:
         todo.is_completed = todo_update.is_completed
 
-    if todo_update.reminder_at is not None:
-        todo.reminder_at = todo_update.reminder_at
+    todo.reminder_at = todo_update.reminder_at
 
     db.commit()
     db.refresh(todo)
