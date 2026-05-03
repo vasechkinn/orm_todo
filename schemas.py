@@ -12,11 +12,13 @@ class ToDoCreate(BaseModel):
     title: str = Field(min_length=MIN_LENGTH, max_length=MAX_LENGTH)
     description: str = Field(min_length=MIN_LENGTH, max_length=MAX_LENGTH)
     is_completed: bool = False
+    reminder_at: datetime | None = None
 
 class ToDoUpdate(BaseModel):
     title: str | None = Field(None, min_length=MIN_LENGTH, max_length=MAX_LENGTH)
     description: str | None = Field(None, min_length=MIN_LENGTH, max_length=MAX_LENGTH)
     is_completed: bool | None = None
+    reminder_at: datetime | None = None
 
 class ReminderSet(BaseModel):
     reminder_at: datetime
