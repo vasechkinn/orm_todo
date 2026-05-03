@@ -32,7 +32,7 @@ def create_todo(db: Session, todo: ToDoCreate) -> Todo:
         title=todo.title,
         description=todo.description,
         is_completed=todo.is_completed,
-        reminder_at=None)
+        reminder_at=todo.reminder_at)
 
     db.add(todo_create)
     db.commit()
@@ -54,6 +54,9 @@ def update_todo_by_id(db: Session, todo_id: int, todo_update: ToDoUpdate) -> Tod
 
     if todo_update.is_completed is not None:
         todo.is_completed = todo_update.is_completed
+
+    if todo_update.reminder_at is not None:
+        todo.reminder_at = todo_update.reminder_at
 
     db.commit()
     db.refresh(todo)
