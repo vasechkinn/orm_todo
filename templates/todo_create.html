@@ -14,27 +14,40 @@
 <body>
 
     <h1 class="create_todo">Заполните поля новой заметк</h1>
-
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
     <form method="post" action="/todos/create">
         <label>
             Название: <br>
-            <input type="text" name="title" required minlength="1" maxlength="256" class="input_text">
+            <input type="text" name="title" 
+            required minlength="1" 
+            maxlength="256" class="input_text"
+            value="{{ form_title | default('')}}">
         </label><br><br>
 
         <label>
             Описание: <br>
-            <textarea class="input_text" type="text" name="description" required maxlength="512" rows="5" cols="80"></textarea>
+            <textarea type="text" name="description" 
+            class="input_text" required 
+            maxlength="512" rows="5" cols="80">{{form_description | default('')}}</textarea>
         </label><br><br>
 
         <label>
             Напоминание: <br>
-            <input class="input_text" 
+            <input class="input_text"
             type="datetime-local"
             name="reminder_at">
         </label><br><br>
 
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="gridCheck" name="is_completed">
+            <input class="form-check-input" 
+            type="checkbox" 
+            id="gridCheck" 
+            name="is_completed"
+            {% if form_is_competed %} checked {% endif %}>
             <label class="form-check-label" for="gridCheck">
                 Задача выполнена.
             </label>

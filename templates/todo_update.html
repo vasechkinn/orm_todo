@@ -13,24 +13,34 @@
 
 <body>
     <h1 class="update_todo">Выберите поля для редактирования</h1>
-
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+    
     <form method="post" action="/todos/{{ todo.id }}/update">
 
         <label>
             Название: <br>
-            <input type="text" name="title" value="{{ todo.title }}" required minlength="1" maxlength="256"
-                class="input_text">
+            <input type="text" name="title"
+            value="{{ form_title if form_title is defined else todo.title }}" required
+            minlength="1" maxlength="256"
+            class="input_text">
         </label><br><br>
 
         <label>
             Описание: <br>
-            <textarea class="input_text" type="text" name="description" required maxlength="512" rows="5"
-                cols="80">{{ todo.description }}</textarea>
+            <textarea class="input_text" type="text"
+            name="description" required
+            maxlength="512" rows="5"
+            cols="80">{{ form_description if form_description is defined else todo.description }}</textarea>
         </label><br><br>
 
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="gridCheck" name="is_completed" {% if todo.is_completed
-                %} checked {% endif %}>
+            <input class="form-check-input" type="checkbox"
+            id="gridCheck" name="is_completed" 
+            {% if todo.is_completed %} checked {% endif %}>
             <label class="form-check-label" for="gridCheck">
                 Задача выполнена.
             </label>
