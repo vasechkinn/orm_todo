@@ -8,8 +8,13 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    transition: transform 0.2s ease;
+    will-change: transform;
 }
 
+.card:hover {
+    transform: scale(1.07);
+}
 
 .card-text {
     display: -webkit-box;
